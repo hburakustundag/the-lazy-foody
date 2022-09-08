@@ -7,6 +7,18 @@ const getDishes = (req, res) => {
   });
 };
 
+const getDishById = async (req, res) => {
+  try {
+    const getDish = "SELECT * FROM dishes WHERE dish_id = $1";
+    const { id } = req.params;
+    const getResult = await pool.query(getDish, [id]);
+
+    res.json(getResult.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
 const addDishes = async (req, res) => {
   try {
     const checkDishExists = "SELECT s FROM dishes s WHERE s.dish_name = $1";
@@ -27,4 +39,5 @@ const addDishes = async (req, res) => {
 module.exports = {
   getDishes,
   addDishes,
+  getDishById,
 };
