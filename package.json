@@ -1,0 +1,27 @@
+{
+  "name": "the-lazy-foody",
+  "version": "1.0.0",
+  "description": "A web app for lazy foodies where they can get list of dishes made with the ingredients in their fridge.",
+  "main": "controller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hburakustundag/the-lazy-foody.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hburakustundag/the-lazy-foody/issues"
+  },
+  "homepage": "https://github.com/hburakustundag/the-lazy-foody#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
