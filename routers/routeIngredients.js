@@ -1,10 +1,9 @@
-const { Router } = require('express');
-const controller = require('../controllers/controllerIngredients');
+const { Router } = require("express");
+const controller = require("../controllers/controllerIngredients");
 
 const router = Router();
 
-// router.get('/', controller.getIngredients);
-// router.post('/', controller.addIngredients);
-
+router.get("/", controller.getIngredients);
+router.post("/", controller.addIngredient);
 
 module.exports = router;
