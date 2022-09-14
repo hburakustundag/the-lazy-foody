@@ -1,5 +1,5 @@
-const expresss = require('express');
-const app = expresss();
+const express = require('express');
+const app = express();
 
 const port = 3000;
 const pool = require('./db')
@@ -7,7 +7,7 @@ const pool = require('./db')
 const routeIngredients = require('./routers/routeIngredients');
 const routeDishes = require('./routers/routeDishes');
 
-app.use(expresss.json());
+app.use(express.json());
 
 app.use('/ingredients', routeIngredients);
 app.use('/dishes', routeDishes);
