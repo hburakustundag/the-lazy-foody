@@ -1,19 +1,18 @@
-const pool = require("../db");
+const pool = require("../db/db");
 
 const getIngredients = async (req, res) => {
   try {
-    const text = "SELECT * FROM ingredients";
-    
+    const query = "SELECT * FROM ingredients";
+    const results = await pool.query(query);
     res.status(200).send(results.rows);
   } catch (error) {
-    const results = await pool.query(text);
     console.log(error.message);
   }
 };
   
 const getIngredientById = async (req, res) => {
   try {
-  const getIngredient = "SELECT * FROM ingredients WHERE ingredient_id = $1";
+  const getIngredient = "SELECT * FROM ingredients WHERE id = $1";
   const { id } = req.params;
   const getResult = await pool.query(getIngredient, [id]);
   res.json(getResult.rows[0]);  
