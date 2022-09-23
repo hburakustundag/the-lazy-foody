@@ -19,6 +19,9 @@
   "homepage": "https://github.com/hburakustundag/the-lazy-foody#readme",
   "dependencies": {
     "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "http-status": "^1.5.3",
+    "knex": "^2.3.0",
     "pg": "^8.8.0"
   },
   "devDependencies": {
