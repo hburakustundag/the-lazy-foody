@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 
 const port = 3000;
-const pool = require('./db')
 
 const routeIngredients = require('./routers/routeIngredients');
 const routeDishes = require('./routers/routeDishes');
@@ -19,3 +18,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);
 })
+
+module.exports = app;
