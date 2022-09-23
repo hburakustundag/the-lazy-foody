@@ -1,4 +1,4 @@
-const pool = require("../db");
+const pool = require("../db/db");
 
 const getDishes = (req, res) => {
   pool.query("SELECT * FROM dishes", (error, results) => {
@@ -9,7 +9,7 @@ const getDishes = (req, res) => {
 
 const getDishById = async (req, res) => {
   try {
-    const getDish = "SELECT * FROM dishes WHERE dish_id = $1";
+    const getDish = "SELECT * FROM dishes WHERE id = $1";
     const { id } = req.params;
     const getResult = await pool.query(getDish, [id]);
 
@@ -54,9 +54,21 @@ const suggest = async (req, res) => {
   }
 };
 
+const removeDishes = async (req, res) => {
+  try {
+    const removeDish = "DELETE FROM dishes WHERE id = $1";
+    const { id } = req.params;
+     await pool.query(removeDish, [id])
+     return res.status(204).send({message: "Dish is not found"})
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 module.exports = {
   getDishes,
   addDishes,
   getDishById,
-  suggest
+  suggest,
+  removeDishes
 };
