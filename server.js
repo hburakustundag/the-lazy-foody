@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan')
 
 const port = 3000;
 
@@ -8,8 +9,11 @@ const routeDishes = require('./routers/routeDishes');
 
 app.use(express.json());
 
+
 app.use('/ingredients', routeIngredients);
 app.use('/dishes', routeDishes);
+app.use(morgan('combined'))
+
 
 app.get('/', (req, res) => {
     res.send("Hello, welcome!");
