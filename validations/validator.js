@@ -13,11 +13,11 @@ const addIngredient = [body('ingredient_name')
     error.checkError
 ]
 const getDishById = [check('id')
-    .isInt(),
+    .isInt({min: 1}),
     error.checkError
 ]
 const getIngredientById = [check('id')
-    .isInt(),
+    .isInt({min: 1}),
     error.checkError
 ]
 
