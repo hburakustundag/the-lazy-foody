@@ -8,6 +8,6 @@ router.get("/", controller.getDishes);
 router.get("/:id", validator.getDishById, controller.getDishById);
 router.post("/", validator.addDishes, controller.addDishes);
 router.post("/suggest", controller.suggest);
-router.delete('/:id', controller.removeDishes)
+router.delete('/:id', controller.removeDish)
 
 module.exports = router;
