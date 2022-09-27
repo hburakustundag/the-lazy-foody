@@ -54,14 +54,14 @@ const suggest = async (req, res) => {
   }
 };
 
-const removeDishes = async (req, res) => {
+const removeDish = async (req, res) => {
   try {
     const removeDish = "DELETE FROM dishes WHERE id = $1";
     const { id } = req.params;
      await pool.query(removeDish, [id])
-     return res.status(204).send({message: "Dish is not found"})
-  } catch (e) {
-    console.error(e);
+    res.status(200).send({message: "Successfully removed"})
+  } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -70,5 +70,5 @@ module.exports = {
   addDishes,
   getDishById,
   suggest,
-  removeDishes
+  removeDish
 };
