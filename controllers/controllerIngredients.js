@@ -6,7 +6,7 @@ const getIngredients = async (req, res) => {
     const results = await pool.query(query);
     res.status(200).send(results.rows);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };
   
@@ -34,12 +34,24 @@ const addIngredient = async (req, res) => {
     await pool.query(addIngredient, value);
     res.status(201).send("The ingredient is successfully added.");
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };
+
+const removeIngredient = async (req, res) => {
+  try {
+    const removeIngredient = "DELETE FROM ingredients WHERE id = $1";
+    const { id } = req.params;
+    await pool.query(removeIngredient, [id])
+    return res.status(204).send("The ingredient is successfully removed.")
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 module.exports = {
   getIngredients,
   getIngredientById,
   addIngredient,
+  removeIngredient
 };
