@@ -1,21 +1,28 @@
-const pool = require("../db/db");
+const db = require("../db/db");
+const database = new db();
+const queries = require('./queries')
 
 const getIngredients = async (req, res) => {
   try {
-    const query = "SELECT * FROM ingredients";
-    const results = await pool.query(query);
-    res.status(200).send(results.rows);
+    const getAllIngredients = await database.pool.query(queries.getAllIngredients);
+    res.status(200).send(getAllIngredients.rows);
   } catch (error) {
     console.error(error.message);
   }
 };
-  
+
 const getIngredientById = async (req, res) => {
   try {
-  const getIngredient = "SELECT * FROM ingredients WHERE id = $1";
-  const { id } = req.params;
-  const getResult = await pool.query(getIngredient, [id]);
-  res.json(getResult.rows[0]);  
+    const { id } = req.params;
+    const getIngredientFromCache = await database.redisClient.get(`ingredient:${id}`);
+    if(getIngredientFromCache !== null) {
+      console.log('returned from cache');
+      return res.json(JSON.parse(getIngredientFromCache))
+    }
+    const getOneIngredient = await database.pool.query(queries.getOneIngredient, [id]);
+    const stringifyGetOneIngredient = JSON.stringify(getOneIngredient.rows[0])
+    await database.redisClient.setEx(`ingredient:${id}`, 300, stringifyGetOneIngredient)
+    res.json(getOneIngredient.rows[0]);
   } catch (error) {
     console.error(error.message);
   }
@@ -23,15 +30,11 @@ const getIngredientById = async (req, res) => {
 
 const addIngredient = async (req, res) => {
   try {
-    const checkIngredient = "SELECT s FROM ingredients s WHERE s.ingredient_name = $1";
-    const addIngredient = "INSERT INTO ingredients (ingredient_name) VALUES ($1) RETURNING *";
-    const value = [req.body.ingredient_name];
-
-    const results = await pool.query(checkIngredient, value);
-    if (results.rows.length) {
+    const checkIngredientExists = await database.pool.query(queries.checkIngredientExists, [req.body.ingredient_name]);
+    if (checkIngredientExists.rows.length) {
       res.send("Ingredient already exists.");
     }
-    await pool.query(addIngredient, value);
+    await database.pool.query(queries.addIngredient, [req.body.ingredient_name]);
     res.status(201).send("The ingredient is successfully added.");
   } catch (error) {
     console.error(error.message);
@@ -40,18 +43,17 @@ const addIngredient = async (req, res) => {
 
 const removeIngredient = async (req, res) => {
   try {
-    const removeIngredient = "DELETE FROM ingredients WHERE id = $1";
     const { id } = req.params;
-    await pool.query(removeIngredient, [id])
-    return res.status(204).send("The ingredient is successfully removed.")
+    await database.pool.query(queries.removeIngredient, [id]);
+    res.status(200).send({ message: "Successfully removed" });
   } catch (error) {
     console.error(error.message);
   }
-}
+};
 
 module.exports = {
   getIngredients,
   getIngredientById,
   addIngredient,
-  removeIngredient
+  removeIngredient,
 };
