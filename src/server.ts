@@ -4,8 +4,8 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-const routeDishes = require('./routers/routeDishes.js');
-const routeIngredients = require('./routers/routeIngredients.js');
+const routeDishes = require('./routers/routeDishes');
+const routeIngredients = require('./routers/routeIngredients');
 
 app.use(express.json());
 

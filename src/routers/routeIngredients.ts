@@ -1,6 +1,6 @@
-const { Router } = require("express");
+import { Router } from "express";
 const controller = require("../controllers/controllerIngredients");
-const validator = require("../validations/validator");
+const validator = require("../helpers/validator");
 
 const router = Router();
 

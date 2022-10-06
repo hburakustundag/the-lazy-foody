@@ -1,7 +1,8 @@
 const request = require("supertest");
-const app = require("../server");
+const app = require("../src/server");
 const httpStatus = require("http-status");
 const { Pool } = require("pg");
+
 
 jest.mock("pg", () => {
   const mClient = {

@@ -1,6 +1,6 @@
-const { Router } = require("express");
-const controller = require("../controllers/controllerDishes");
-const validator = require("../validations/validator");
+import { Router } from "express";
+const controller = require ('../controllers/controllerDishes.ts')
+const validator = require("../helpers/validator");
 
 const router = Router();
 
@@ -11,3 +11,6 @@ router.post("/suggest", controller.suggestDishes);
 router.delete("/:id", controller.removeDish);
 
 module.exports = router;
+
+
+
