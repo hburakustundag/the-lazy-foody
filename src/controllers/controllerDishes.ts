@@ -1,17 +1,18 @@
-const db = require("../db/db");
-const database = new db();
-const queries = require("./queries");
+import express, { Request, Response } from "express";
+import Database from "../database/db";
+import queries from './queries'
+const database = new Database();
 
-const getDishes = async (req, res) => {
+const getDishes = async (req: Request, res: Response) => {
   try {
     const getAllDishes = await database.pool.query(queries.getAllDishes);
     res.status(200).json(getAllDishes.rows);
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
   }
 };
 
-const getDishById = async (req, res) => {
+const getDishById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const getDishFromCache = await database.redisClient.get(`dish:${id}`);
@@ -24,14 +25,14 @@ const getDishById = async (req, res) => {
     await database.redisClient.setEx(`dish:${id}`, 300, stringifyGetOneDish);
     res.json(getOneDish.rows[0]);
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
   }
 };
 
-const addDishes = async (req, res) => {
+const addDishes = async (req: Request, res: Response) => {
   try {
     const checkDishQueryResult = await database.pool.query(
-      queries.checkDishExists,
+      queries.checkDishExists
     );
     if (checkDishQueryResult.rows.length) {
       res.send("Dish already exists.");
@@ -39,21 +40,21 @@ const addDishes = async (req, res) => {
     await database.pool.query(queries.addDish, [req.body.dish_name]);
     res.status(201).send("The dish is added.");
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
   }
 };
 
-const removeDish = async (req, res) => {
+const removeDish = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     await database.pool.query(queries.removeDish, [id]);
     res.status(200).send({ message: "Successfully removed" });
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
   }
 };
 
-const suggestDishes = async (req, res) => {
+const suggestDishes = async (req: Request, res: Response) => {
   try {
     const dish_names = req.body.dish_names;
     const dish_count = req.body.dish_names.length;
@@ -63,11 +64,11 @@ const suggestDishes = async (req, res) => {
     ]);
     res.json(suggestDishes.rows);
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
   }
 };
 
-module.exports = {
+export {
   getDishes,
   addDishes,
   getDishById,

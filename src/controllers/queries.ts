@@ -17,7 +17,7 @@ const checkIngredientExists = "SELECT s FROM ingredients s WHERE s.ingredient_na
 const addIngredient = "INSERT INTO ingredients (ingredient_name) VALUES ($1) RETURNING *";
 const removeIngredient = "DELETE FROM ingredients WHERE id = $1";
 
-module.exports = {
+export default {
     getAllDishes,
     getOneDish,
     checkDishExists,
