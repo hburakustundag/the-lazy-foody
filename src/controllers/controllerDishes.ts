@@ -56,11 +56,11 @@ const removeDish = async (req: Request, res: Response) => {
 
 const suggestDishes = async (req: Request, res: Response) => {
   try {
-    const dish_names = req.body.dish_names;
-    const dish_count = req.body.dish_names.length;
+    const ingredient_names = req.body.ingredient_names;
+    const ingredients_count = req.body.ingredient_names.length;
     const suggestDishes = await database.pool.query(queries.suggestDishes, [
-      dish_names,
-      dish_count,
+      ingredient_names,
+      ingredients_count,
     ]);
     res.json(suggestDishes.rows);
   } catch (error) {
