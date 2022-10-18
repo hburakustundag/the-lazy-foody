@@ -1,4 +1,4 @@
-const { body, validationResult, check } = require("express-validator");
+const { body, check } = require("express-validator");
 const error = require("./errorSchema");
 const addDishes = [
   body("dish_name").exists({ checkFalsy: true }).isLength({ min: 2 }).isAlpha(),
