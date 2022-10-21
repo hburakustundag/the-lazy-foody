@@ -7,8 +7,9 @@ const ListIngredients = () => {
 
   const getIngredients = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/ingredients")
-      .then(response => response.data)
+      const response = await axios
+        .get("http://localhost:3000/ingredients")
+        .then((response) => response.data);
       setData(response);
     } catch (error) {
       console.error(error.message);
@@ -16,12 +17,13 @@ const ListIngredients = () => {
   };
 
   const postIngredients = async () => {
-      const checkboxData = {ingredient_names: ingredients}
-      await axios.post('http://localhost:3000/dishes/suggest', checkboxData)
-      .then(response => console.log(response))
-      .catch(err => console.error(err)) 
-  }
-  
+    const checkboxData = { ingredient_names: ingredients };
+    await axios
+      .post("http://localhost:3000/dishes/suggest", checkboxData)
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err));
+  };
+
   useEffect(() => {
     getIngredients();
   }, []);
@@ -35,7 +37,7 @@ const ListIngredients = () => {
       ingredientsArray.splice(index, 1);
     }
     setIngredients(ingredientsArray);
-  }
+  };
 
   return (
     <Fragment>
@@ -50,17 +52,24 @@ const ListIngredients = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map(item => (
+          {data.map((item) => (
             <tr key={item.id}>
-            <th scope="row">
-              <input className="form-check-input form_checkbox" type="checkbox"  value={data.ingredient_name} onClick={() => handleChange(item.ingredient_name)}/>
-            </th>
-            <td>{item.ingredient_name}</td>
-          </tr>
-          ))}     
+              <th scope="row">
+                <input
+                  className="form-check-input form_checkbox"
+                  type="checkbox"
+                  value={data.ingredient_name}
+                  onClick={() => handleChange(item.ingredient_name)}
+                />
+              </th>
+              <td>{item.ingredient_name}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      <button className="btn" onClick={() => postIngredients()}>Suggest</button>
+      <button className="btn" onClick={() => postIngredients()}>
+        Suggest
+      </button>
     </Fragment>
   );
 };
