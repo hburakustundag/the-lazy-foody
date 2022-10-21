@@ -8,7 +8,7 @@ const getIngredients = async (req: Request, res: Response) => {
     const getAllIngredients = await database.pool.query(
       queries.getAllIngredients
     );
-    res.status(200).render('ingredients', {ingredient: getAllIngredients.rows});
+    res.status(200).send(getAllIngredients.rows);
   } catch (error) {
     console.error(error);
   }
