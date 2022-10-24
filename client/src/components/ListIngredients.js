@@ -4,6 +4,8 @@ import axios from "axios";
 const ListIngredients = () => {
   const [data, setData] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
   const getIngredients = async () => {
     try {
@@ -18,10 +20,20 @@ const ListIngredients = () => {
 
   const postIngredients = async () => {
     const checkboxData = { ingredient_names: ingredients };
-    await axios
-      .post("http://localhost:3000/dishes/suggest", checkboxData)
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
+    try {
+      if (ingredients.length) {
+        const response = await axios
+          .post("http://localhost:3000/dishes/suggest", checkboxData)
+          .then((response) => response.data);
+        setSuggestions(response);
+        
+      } else {
+        alert("You did not choose any ingredient!");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+    setOpenModal(true);
   };
 
   useEffect(() => {
@@ -38,40 +50,64 @@ const ListIngredients = () => {
     }
     setIngredients(ingredientsArray);
   };
+  
+  const Modal = ({open, onClose}) => {
+    if(!open) return null;
+    return (
+        <div className='modalContainer'>
+            <div className='modalRight'>
+                <p className='closeBtn' onClick={onClose}>X</p>
+                <div className='content'>
+                  <p><b>Suggested meals are listed below:</b></p>
+                  {suggestions.map((item, index) => (
+                      <p key={index}> {item.dish_name[0].toUpperCase() + item.dish_name.slice(1)}</p>
+                  ))}
+                </div>
+            </div>
+        </div>
+    )
+}
 
   return (
     <Fragment>
       {" "}
-      <table className="table table-responsive table-borderless mt-5">
-        <thead>
-          <tr className="bg-light">
-            <th scope="col" width="5%"></th>
-            <th scope="col" width="20%">
-              Ingredient
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item) => (
-            <tr key={item.id}>
-              <th scope="row">
-                <input
-                  className="form-check-input form_checkbox"
-                  type="checkbox"
-                  value={data.ingredient_name}
-                  onClick={() => handleChange(item.ingredient_name)}
-                />
+      <div className="container mt-5 w-25">
+        <table className="table table-responsive table-borderless">
+          <thead>
+            <tr className="bg-light">
+              <th scope="col" width="5%"></th>
+              <th scope="col" width="20%">
+                Ingredient
               </th>
-              <td>{item.ingredient_name}</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <button className="btn" onClick={() => postIngredients()}>
-        Suggest
-      </button>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.id}>
+                <th scope="row">
+                  <input
+                    className="form-check-input form_checkbox"
+                    type="checkbox"
+                    value={data.ingredient_name}
+                    onClick={() => handleChange(item.ingredient_name)}
+                  />
+                </th>
+                <td>{item.ingredient_name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button
+          className="btn btn-primary mt-1 ml-auto"
+          onClick={() => postIngredients()}
+        >
+          Suggest
+        </button>
+      </div>
+      {<Modal open={openModal} onClose={() => setOpenModal(false)} />}
     </Fragment>
   );
 };
 
 export default ListIngredients;
+
