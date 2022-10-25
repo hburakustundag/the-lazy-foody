@@ -26,14 +26,13 @@ const ListIngredients = () => {
           .post("http://localhost:3000/dishes/suggest", checkboxData)
           .then((response) => response.data);
         setSuggestions(response);
-        
+        setOpenModal(true);
       } else {
         alert("You did not choose any ingredient!");
       }
     } catch (error) {
       console.error(error.message);
     }
-    setOpenModal(true);
   };
 
   useEffect(() => {
@@ -50,28 +49,35 @@ const ListIngredients = () => {
     }
     setIngredients(ingredientsArray);
   };
-  
-  const Modal = ({open, onClose}) => {
-    if(!open) return null;
+
+  const Modal = ({ open, onClose }) => {
+    if (!open) return null;
     return (
-        <div className='modalContainer'>
-            <div className='modalRight'>
-                <p className='closeBtn' onClick={onClose}>X</p>
-                <div className='content'>
-                  <p><b>Suggested meals are listed below:</b></p>
-                  {suggestions.map((item, index) => (
-                      <p key={index}> {item.dish_name[0].toUpperCase() + item.dish_name.slice(1)}</p>
-                  ))}
-                </div>
-            </div>
+      <div className="modalContainer">
+        <div className="modalRight">
+          <p className="closeBtn" onClick={onClose}>
+            X
+          </p>
+          <div className="content">
+            <p>
+              <b>Suggested meals are listed below:</b>
+            </p>
+            {suggestions.map((item, index) => (
+              <p key={index}>
+                {" "}
+                {item.dish_name[0].toUpperCase() + item.dish_name.slice(1)}
+              </p>
+            ))}
+          </div>
         </div>
-    )
-}
+      </div>
+    );
+  };
 
   return (
     <Fragment>
       {" "}
-      <div className="container mt-5 w-25">
+      
         <table className="table table-responsive table-borderless">
           <thead>
             <tr className="bg-light">
@@ -103,11 +109,9 @@ const ListIngredients = () => {
         >
           Suggest
         </button>
-      </div>
       {<Modal open={openModal} onClose={() => setOpenModal(false)} />}
     </Fragment>
   );
 };
 
 export default ListIngredients;
-
