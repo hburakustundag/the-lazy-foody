@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 
 const routeDishes = require("./routers/routeDishes");
 const routeIngredients = require("./routers/routeIngredients");
+const routeUsers = require("./routers/routeUsers");
 
 app.use(cors());
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use(morgan("combined"));
 app.use(express.urlencoded({ extended: true }));
 app.use("/ingredients", routeIngredients);
 app.use("/dishes", routeDishes);
+app.use("/users", routeUsers);
 app.use("/", express.static("client/public"));
 
 app.get("/", controller.getIngredients);
