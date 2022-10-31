@@ -23,6 +23,8 @@ const registerUser =
   "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *";
 const checkUserExists = "SELECT s FROM users s WHERE s.username = $1";
 
+const loginUser = "SELECT * FROM users WHERE username = $1 AND password = $2";
+
 export default {
   getAllDishes,
   getOneDish,
@@ -37,4 +39,5 @@ export default {
   removeIngredient,
   registerUser,
   checkUserExists,
+  loginUser,
 };
