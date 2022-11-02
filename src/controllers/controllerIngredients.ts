@@ -47,12 +47,12 @@ const addIngredient = async (req: Request, res: Response) => {
       [req.body.ingredient_name]
     );
     if (checkIngredientExists.rows.length) {
-      res.send("Ingredient already exists.");
+      res.send({message: "Ingredient already exists."});
     }
     await database.pool.query(queries.addIngredient, [
       req.body.ingredient_name,
     ]);
-    res.status(201).send("The ingredient is successfully added.");
+    res.status(201).send({message: "The ingredient is successfully added."});
   } catch (error) {
     console.error(error);
   }
