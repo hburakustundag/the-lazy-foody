@@ -25,7 +25,10 @@ const checkUserExists = "SELECT s FROM users s WHERE s.username = $1";
 
 const loginUser = "SELECT * FROM users WHERE username = $1 AND password = $2";
 const userID = "SELECT id FROM users WHERE username = $1, password = $2";
-const addTokenForUser = "INSERT INTO tokens (user_id, token) VALUES ($1, $2)";
+const addTokenForUser =
+  "INSERT INTO tokens (user_id, token, is_valid) VALUES ($1, $2, B'1')";
+const checkToken =
+  "SELECT token FROM tokens WHERE token = $1 and is_valid = B'1'";
 
 export default {
   getAllDishes,
@@ -44,4 +47,5 @@ export default {
   loginUser,
   addTokenForUser,
   userID,
+  checkToken,
 };
