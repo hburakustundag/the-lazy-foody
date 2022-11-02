@@ -40,9 +40,9 @@ const loginUser = async (req: Request, res: Response) => {
     const userID = loggedIn.rows[0]["id"];
     addTokenForUser(userID);
     if (loggedIn.rows.length) {
-      res.status(200).send(`Succesfully logged in.`);
+      res.status(200).send({ message: "Successfully logged in." });
     } else {
-      res.status(200).send("Wrong username or password.");
+      res.status(200).send({ message: "Wrong username or password." });
     }
   } catch (error) {
     console.log(error);
