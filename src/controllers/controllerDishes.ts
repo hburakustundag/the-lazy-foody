@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import Database from "../database/db";
-import queries from './queries'
+import queries from "./queries";
 const database = new Database();
 
 const getDishes = async (req: Request, res: Response) => {
@@ -32,13 +32,14 @@ const getDishById = async (req: Request, res: Response) => {
 const addDishes = async (req: Request, res: Response) => {
   try {
     const checkDishQueryResult = await database.pool.query(
-      queries.checkDishExists
+      queries.checkDishExists,
+      [req.body.dish_name]
     );
     if (checkDishQueryResult.rows.length) {
-      res.send("Dish already exists.");
+      res.send({ message: "Dish already exists." });
     }
     await database.pool.query(queries.addDish, [req.body.dish_name]);
-    res.status(201).send("The dish is added.");
+    res.status(201).send({ message: "The dish is added." });
   } catch (error) {
     console.error(error);
   }
@@ -68,10 +69,4 @@ const suggestDishes = async (req: Request, res: Response) => {
   }
 };
 
-export {
-  getDishes,
-  addDishes,
-  getDishById,
-  suggestDishes,
-  removeDish,
-};
+export { getDishes, addDishes, getDishById, suggestDishes, removeDish };
