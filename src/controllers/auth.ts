@@ -14,10 +14,10 @@ const registerUser = async (req: Request, res: Response) => {
     ]);
     if (checkUser.rows.length) {
       console.log("You can't take this username.");
-      res.send("You can't take this username.");
+      res.send({ message: "You can't take this username." });
     } else {
       await database.pool.query(queries.registerUser, [username, password]);
-      res.status(201).send("User is successfully created.");
+      res.status(201).send({ message: "User is successfully created." });
     }
   } catch (error) {
     console.error(error);
