@@ -2,6 +2,7 @@ import express, { Request, Response, Router } from "express";
 import Database from "../database/db";
 import queries from "./queries";
 const md5 = require("md5");
+import { v4 as uuidv4 } from "uuid";
 const database = new Database();
 
 const registerUser = async (req: Request, res: Response) => {
@@ -23,6 +24,11 @@ const registerUser = async (req: Request, res: Response) => {
   }
 };
 
+const addTokenForUser = async (userID: any) => {
+  const uuidToken = uuidv4();
+  await database.pool.query(queries.addTokenForUser, [userID, uuidToken]);
+};
+
 const loginUser = async (req: Request, res: Response) => {
   try {
     const username = req.body.username;
@@ -31,8 +37,10 @@ const loginUser = async (req: Request, res: Response) => {
       username,
       password,
     ]);
+    const userID = loggedIn.rows[0]["id"];
+    addTokenForUser(userID);
     if (loggedIn.rows.length) {
-      res.status(200).send("Succesfully logged in.");
+      res.status(200).send(`Succesfully logged in.`);
     } else {
       res.status(200).send("Wrong username or password.");
     }
