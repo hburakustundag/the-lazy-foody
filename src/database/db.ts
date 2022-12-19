@@ -11,10 +11,11 @@ export default class Database {
     password: process.env.PGPASSWORD,
     port: process.env.PGPORT,
   });
+
   //cache
   redisClient: any;
   constructor() {
-    this.redisClient = redis.createClient();
+    this.redisClient = redis.createClient({ url: "redis://redis:6379" });
     this.redisClient.on("error", (err: any) =>
       console.log("Redis Client Error", err)
     );
