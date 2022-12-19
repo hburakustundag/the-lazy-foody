@@ -1,0 +1,37 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    container_name: the-lazy-foody
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - PGDATABASE=the_lazy_foody
+      - PGUSER=postgres
+      - PGPASSWORD=root
+    depends_on:
+      - db
+      - redis
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: the_lazy_foody
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - cache-data:/data
+volumes:
+  db-data:
+  cache-data:
