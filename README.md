@@ -22,8 +22,4 @@ https://user-images.githubusercontent.com/89309670/207581831-e92572c6-c08c-4102-
 <li>Creating account creation and shopping list features for the users.</li>
 </ul>
 
-<h2>Lessons Learned:</h2>
 
-<ul>
-<li>This app was my first big project. I've learned many crucial lessons such as how cache works, how to write more readable and reusable code, how relational databases work, why should we add validations, why should we write tests, etc.</li>
-</ul>
